@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import JobCard from "./JobCard";
 
 function App() {
   // const [jsonData, setJsonData] = useState(null);
-  const [filteredData, setFilteredData] = useState({});
-
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     // Charger le fichier JSON depuis le dossier public
@@ -18,15 +18,29 @@ function App() {
 
   return (
     <div className="App">
-      {/* <header className="App-header"></header> */}
-      <h1>click</h1>
-      <h1 className="title" onClick={() => console.log(filteredData)}>
-        OHHHH
+      <h1 className="notification is-primary">Offres d'emploi</h1>
+      <h1
+        className="title"
+        onClick={() => console.log("DEBUG ;-) ", filteredData)}
+      >
+        Offres d'emploi
       </h1>
-      <div className="notification is-primary">
-        Ceci est une notification Bulma.
+      <div className="columns is-multiline">
+        {/* Utilisez la classe is-multiline pour permettre un retour à la ligne automatique */}
+        {filteredData.map((job) => (
+          <div className="column is-4" key={job.id}>
+            {/* Utilisez la classe is-4 pour spécifier que chaque colonne occupe 4 unités sur 12 (pour créer une disposition en 3 colonnes sur grand écran) */}
+            <JobCard job={job} />
+          </div>
+        ))}
       </div>
-      <h1>Données JSON depuis /public</h1>
+
+      {/* {filteredData.map((job) => (
+        <div className="column is-4" key={job.id}>
+          <JobCard job={job} onClick={() => console.log("job", job)} />
+        </div>
+      ))} */}
+
       {filteredData ? (
         <pre>{JSON.stringify(filteredData, null, 2)}</pre>
       ) : (
