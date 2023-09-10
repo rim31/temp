@@ -1,17 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function JobCard(job) {
   const { company } = job?.job;
+  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
 
+  const toggleAdditionalInfo = () => {
+    setShowAdditionalInfo(!showAdditionalInfo);
+  };
   return (
-    <div
-      className="card"
-      onClick={() => {
-        console.log("job, job.job, job?.job?.company?.pictureURL", company);
-      }}
-    >
-      <div class="card-image">
-        <figure class="image is-4by3">
+    <div className="card">
+      <div className="card-image">
+        <figure className="image is-4by3">
           <img
             src={job?.job?.company?.pictureURL}
             alt={job?.job?.company?.pictureURL}
@@ -19,21 +18,33 @@ export default function JobCard(job) {
         </figure>
       </div>
       <div className="media-content">
-        <p class="title is-4">{job?.job?.details?.jobType}</p>
-        <p class="subtitle is-6">{job?.job?.company?.name}</p>
+        <p className="title is-4">{job?.job?.details?.jobType}</p>
+        <p className="subtitle is-6">
+          {job?.job?.company?.name}, {job?.job?.details?.postalCode}{" "}
+          {job?.job?.details?.city}
+        </p>
         <div className="content">
-          <p>{job?.job?.details?.objective}</p>
-          <p>{job?.job?.details?.additionalInformations}</p>
-          <p>
-            {job?.job?.details?.postalCode} {job?.job?.details?.city}
-          </p>
+          <button
+            className="button is-light"
+            onClick={() => toggleAdditionalInfo()}
+          >
+            {showAdditionalInfo ? "Masquer détails" : "Afficher détails"}
+          </button>
+          {showAdditionalInfo && (
+            <div>
+              <p>{job?.job?.details?.objective}</p>
+              <p>{job?.job?.details?.additionalInformations}</p>
+            </div>
+          )}
+          <p></p>
           {/* Ajoutez d'autres informations si nécessaire */}
         </div>
       </div>
-      <footer className="card-footer">
-        <a href="rim31.github.io" className="card-footer-item">
-          Postuler
-        </a>
+      <footer
+        className="card-footer is-primary"
+        onClick={() => console.log(job?.job?.id, job, company)}
+      >
+        <p className="card-footer-item">Postuler</p>
       </footer>
     </div>
   );
