@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import JobCard from "./JobCard";
 
 const JobList = ({ jobs }) => {
-  // const [filteredJobs, setFilterdJobs] = useState(jobs);
-  const filteredJobs = jobs;
+  const [filteredJobs, setFilteredJobs] = useState([]);
   const [selectedJobs, setSelectedJobs] = useState([]);
 
   const handleSelect = (jobId) => {
@@ -18,10 +17,14 @@ const JobList = ({ jobs }) => {
   const handleValidate = () => {
     // Traitez les jobs sélectionnés (par exemple, envoyez-les au panier)
     console.log("Jobs sélectionnés :", selectedJobs);
-    // setFilterdJobs(
-    //   filteredJobs.filter((job) => !selectedJobs.includes(job.id))
-    // );
+    setFilteredJobs(
+      filteredJobs.filter((job) => !selectedJobs.includes(job.id))
+    );
   };
+  useEffect(() => {
+    // Mettre à jour filteredJobs lorsque jobs est modifié
+    setFilteredJobs(jobs);
+  }, [jobs]); // Déclencher cet effet chaque fois que jobs change
   return (
     <div className="columns is-multiline">
       {/* Utilisez la classe is-multiline pour permettre un retour à la ligne automatique */}
