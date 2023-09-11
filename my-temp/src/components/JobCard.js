@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function JobCard(job) {
-  const { company, shifts, details } = job?.job;
+  const { company, shifts, details, selection } = job?.job;
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
 
   const toggleAdditionalInfo = () => {
@@ -18,9 +18,9 @@ export default function JobCard(job) {
     // timeZoneName: "short",
   };
 
-  const date = new Date(shifts && shifts[0]?.start);
+  const date = new Date(selection?.privateUntil || new Date());
   const dateFormatted = new Intl.DateTimeFormat("fr-FR", options).format(date);
-
+  const enoughApplicants = shifts ? details.applicants / shifts[0]?.slots : -1;
   console.log(dateFormatted);
   return (
     <div className="card">
@@ -51,7 +51,11 @@ export default function JobCard(job) {
           </div>
         </div>
 
-        <p>{shifts?.length} personnes</p>
+        <p>
+          {enoughApplicants >= 0 && "✅ "}
+          {details?.applicants} postulé(s) /{shifts ? shifts[0]?.slots : 0} pers
+          requises ({shifts?.length} slots)
+        </p>
         <div className="content">
           <button
             className="button is-light"
