@@ -3,11 +3,16 @@ import React, { useState } from "react";
 export default function JobCard(job) {
   const { company, shifts, details, selection } = job?.job;
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+  const [selectJobCard, setSelectJobCard] = useState(false); //// DEBUG
 
   const toggleAdditionalInfo = () => {
     setShowAdditionalInfo(!showAdditionalInfo);
   };
 
+  //// DEBUG
+  const toggleSelectJobCard = () => {
+    setSelectJobCard(!selectJobCard);
+  };
   const options = {
     year: "numeric",
     month: "long",
@@ -32,22 +37,25 @@ export default function JobCard(job) {
           />
         </figure>
       </div> */}
-      <div className="media-content">
-        <div class="media">
-          <div class="media-left pt-2 pl-2">
-            <figure class="image is-48x48">
+      <div
+        className={
+          selectJobCard
+            ? "media-constent has-background-primary-light"
+            : "media-content "
+        }
+      >
+        <div className="media">
+          <div className="media-left pt-2 pl-2">
+            <figure className="image is-48x48">
               <img
                 src={job?.job?.company?.pictureURL}
                 alt={job?.job?.company?.pictureURL}
               />
             </figure>
           </div>
-          <div class="media-content">
-            <p class="title is-4">{job?.job?.details?.jobType}</p>
-            <p class="subtitle is-6">
-              {job?.job?.company?.name}, {job?.job?.details?.postalCode}{" "}
-              {job?.job?.details?.city}
-            </p>
+          <div className="media-content">
+            <p className="title is-4">{job?.job?.details?.jobType}</p>
+            <p className="subtitle is-6">{dateFormatted}</p>
           </div>
         </div>
 
@@ -84,7 +92,10 @@ export default function JobCard(job) {
               </div>
             </div>
           )}
-          <p>{dateFormatted}</p>
+          <p className="subtitle is-6">
+            {job?.job?.company?.name}, {job?.job?.details?.postalCode}{" "}
+            {job?.job?.details?.city}
+          </p>
           {/* Ajoutez d'autres informations si nécessaire */}
         </div>
         {/* <time datetime="2016-1-1">{job?.job?.shifts[0]?.start}</time> */}
@@ -93,7 +104,12 @@ export default function JobCard(job) {
         className="card-footer has-background-light"
         onClick={() => console.log(job?.job?.id, job, company)}
       >
-        <p className="card-footer-item">Selectionner</p>
+        <p
+          className="card-footer-item"
+          onClick={() => toggleSelectJobCard(job)}
+        >
+          {selectJobCard ? "Selectioné ✔️" : "Selectionner"}
+        </p>
       </footer>
     </div>
   );
