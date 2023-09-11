@@ -45,7 +45,7 @@ function App() {
         className="notification is-primary"
         onClick={() => console.log("DEBUG ;-) ", filteredData)}
       >
-        Offres d'emploi
+        Feuille de Travail
       </h1>
       <h1
         className="title"
@@ -53,12 +53,18 @@ function App() {
       >
         Offres d'emploi
       </h1>
-      <Filters filteredData={filteredData} />
+      {filteredData ? (
+        <Filters filteredData={filteredData} />
+      ) : (
+        <p>Chargement en cours...</p>
+      )}
+      {/* <h2> ✅ : conditions remplis, ❌ : non remplis, ⏰ : date urgent</h2> */}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         goToPage={goToPage}
       />
+
       {/* Affiche les offres d'emploi pour la page actuelle */}
       <JobList jobs={getJobsForPage()} />
       <Pagination
@@ -66,11 +72,6 @@ function App() {
         totalPages={totalPages}
         goToPage={goToPage}
       />
-      {filteredData ? (
-        <pre>{JSON.stringify(filteredData, null, 2)}</pre>
-      ) : (
-        <p>Chargement en cours...</p>
-      )}
     </div>
   );
 }
