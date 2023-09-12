@@ -20,7 +20,6 @@ export default function JobCard({ job, onSelect }) {
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-    second: "numeric",
   };
 
   const date = new Date(selection?.privateUntil || new Date());

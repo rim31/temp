@@ -65,12 +65,16 @@ const JobList = ({ jobs }) => {
           <ul>
             {selectedJobs.map((jobId) => (
               <li key={jobId}>
-                {filteredJobs.find((job) => job.id === jobId)?.title}
-                <button onClick={() => handleSelect(jobId)}>Remove</button>
+                {filteredJobs.find((job) => job.id === jobId)?.details?.jobType}
+                <button onClick={() => handleSelect(jobId)}>
+                  ❌(bonus KO)
+                </button>
               </li>
             ))}
           </ul>
-          <button onClick={handleValidate}>Valider</button>
+          <button onClick={handleValidate} class="button is-primary">
+            Valider
+          </button>
         </div>
       </div>
     </div>
