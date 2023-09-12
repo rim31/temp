@@ -15,7 +15,7 @@ const JobList = ({ jobs }) => {
   const getJobsForPage = () => {
     const startIndex = (currentPage - 1) * jobsPerPage;
     const endIndex = startIndex + jobsPerPage;
-    return jobs.slice(startIndex, endIndex);
+    return filteredJobs.slice(startIndex, endIndex);
   };
 
   const goToPage = (page) => {
@@ -40,11 +40,23 @@ const JobList = ({ jobs }) => {
   };
   useEffect(() => {
     setFilteredJobs(jobs);
-  }, [jobs]);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div>
       <p>{filteredJobs?.length} offres</p>
+      {selectedJobs.length && (
+        <div
+          style={{ position: "fixed", top: 10, right: 10 }}
+          className="is-flex-direction-column"
+        >
+          <button onClick={handleValidate} class="button is-light is-small">
+            Valider
+          </button>
+          <p>{selectedJobs?.length} jobs sauvegardés</p>
+        </div>
+      )}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
@@ -60,22 +72,27 @@ const JobList = ({ jobs }) => {
             />
           </div>
         ))}
-        <div className="selected-jobs">
-          <h2>Jobs sélectionnés : {selectedJobs?.length}</h2>
-          <ul>
-            {selectedJobs.map((jobId) => (
-              <li key={jobId}>
-                {filteredJobs.find((job) => job.id === jobId)?.details?.jobType}
-                <button onClick={() => handleSelect(jobId)}>
-                  ❌(bonus KO)
-                </button>
-              </li>
-            ))}
-          </ul>
-          <button onClick={handleValidate} class="button is-primary">
-            Valider
-          </button>
-        </div>
+        {setSelectedJobs.length && (
+          <div className="selected-jobs">
+            <h2> BONUS KO Jobs sélectionnés : {selectedJobs?.length}</h2>
+            <ul>
+              {selectedJobs.map((jobId) => (
+                <li key={jobId}>
+                  {
+                    filteredJobs.find((job) => job.id === jobId)?.details
+                      ?.jobType
+                  }
+                  <button onClick={() => handleSelect(jobId)}>
+                    ❌(bonus KO)
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button onClick={handleValidate} class="button is-primary">
+              Valider
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
