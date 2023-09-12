@@ -26,29 +26,32 @@ const JobList = ({ jobs }) => {
     setFilteredJobs(jobs);
   }, [jobs]); // Déclencher cet effet chaque fois que jobs change
   return (
-    <div className="columns is-multiline">
-      {/* Utilisez la classe is-multiline pour permettre un retour à la ligne automatique */}
-      {filteredJobs.map((job) => (
-        <div className="column is-4" key={job.id}>
-          {/* Utilisez la classe is-4 pour spécifier que chaque colonne occupe 4 unités sur 12 (pour créer une disposition en 3 colonnes sur grand écran) */}
-          <JobCard
-            job={job}
-            isSelected={selectedJobs.includes(job.id)}
-            onSelect={handleSelect}
-          />
+    <div>
+      {filteredJobs?.length}
+      <div className="columns is-multiline">
+        {/* Utilisez la classe is-multiline pour permettre un retour à la ligne automatique */}
+        {filteredJobs.map((job) => (
+          <div className="column is-4" key={job.id}>
+            {/* Utilisez la classe is-4 pour spécifier que chaque colonne occupe 4 unités sur 12 (pour créer une disposition en 3 colonnes sur grand écran) */}
+            <JobCard
+              job={job}
+              isSelected={selectedJobs.includes(job.id)}
+              onSelect={handleSelect}
+            />
+          </div>
+        ))}
+        <div className="selected-jobs">
+          <h2>Jobs sélectionnés : {selectedJobs?.length}</h2>
+          <ul>
+            {selectedJobs.map((jobId) => (
+              <li key={jobId}>
+                {filteredJobs.find((job) => job.id === jobId)?.title}
+                <button onClick={() => handleSelect(jobId)}>Remove</button>
+              </li>
+            ))}
+          </ul>
+          <button onClick={handleValidate}>Valider</button>
         </div>
-      ))}
-      <div className="selected-jobs">
-        <h2>Jobs sélectionnés : {selectedJobs?.length}</h2>
-        <ul>
-          {selectedJobs.map((jobId) => (
-            <li key={jobId}>
-              {filteredJobs.find((job) => job.id === jobId)?.title}
-              <button onClick={() => handleSelect(jobId)}>Remove</button>
-            </li>
-          ))}
-        </ul>
-        <button onClick={handleValidate}>Valider</button>
       </div>
     </div>
   );
