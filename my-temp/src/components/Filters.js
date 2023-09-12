@@ -33,14 +33,19 @@ export default function Filters({ onFilter, jobs, JSONData }) {
       // Appliquez votre logique de filtrage ici pour obtenir les données filtrées
       const filteredData = JSONData.filter((job) => {
         const isClosed = job.selection.status === "closed";
-        const isPrivateUntilBeforeDate =
-          job.selection.privateUntil < selectedDate;
+        const privateUntilDate = new Date(job.selection.privateUntil);
+        const privateUntilFormatted = new Intl.DateTimeFormat("fr-FR").format(
+          privateUntilDate
+        );
+        const selectedDateFormatted = new Intl.DateTimeFormat("fr-FR").format(
+          new Date(selectedDate)
+        );
         const hasObjective = job?.details?.objective?.length < 10;
 
         return (
           (!isClosable || isClosed) && // Filtre isFailing
           (!isShortNotice || hasObjective) && // Filtre isShortNotice
-          (!isFailing || isPrivateUntilBeforeDate) // Filtre isClosable
+          (!isFailing || privateUntilFormatted < selectedDateFormatted) // Filtre isClosable
         );
       });
       onFilter(filteredData);
