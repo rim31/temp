@@ -10,27 +10,8 @@ export default function Filters({ onFilter, jobs, JSONData }) {
     setSelectedDate(event.target.value);
   };
 
-  // const handleFiltering = () => {
-  //   // Appliquez votre logique de filtrage ici pour obtenir les données filtrées
-  //   const filteredData = jobs.filter((job) => {
-  //     const isClosed = job.selection.status === 'closed';
-  //     const isPrivateUntilBeforeDate = job.selection.privateUntil < selectedDate;
-  //     const hasObjective = job.details.objective !== '';
-
-  //     return (
-  //       (!isFailing || isClosed) && // Filtre isFailing
-  //       (!isShortNotice || isPrivateUntilBeforeDate) && // Filtre isShortNotice
-  //       (!isClosable || hasObjective) // Filtre isClosable
-  //     );
-  //   });
-
-  //   // Utilisez la fonction de rappel pour retourner les données filtrées au parent
-  //   onFilter(filteredData);
-  // };
-
   useEffect(() => {
     if (JSONData) {
-      // Appliquez votre logique de filtrage ici pour obtenir les données filtrées
       const filteredData = JSONData.filter((job) => {
         const isClosed = job.selection.status === "closed";
         const privateUntilDate = new Date(job.selection.privateUntil);
@@ -43,9 +24,9 @@ export default function Filters({ onFilter, jobs, JSONData }) {
         const hasObjective = job?.details?.objective?.length < 10;
 
         return (
-          (!isClosable || isClosed) && // Filtre isFailing
-          (!isShortNotice || hasObjective) && // Filtre isShortNotice
-          (!isFailing || privateUntilFormatted < selectedDateFormatted) // Filtre isClosable
+          (!isClosable || isClosed) &&  
+          (!isShortNotice || hasObjective) && 
+          (!isFailing || privateUntilFormatted < selectedDateFormatted) 
         );
       });
       onFilter(filteredData);
@@ -93,7 +74,6 @@ export default function Filters({ onFilter, jobs, JSONData }) {
       </div>
       <div className="column is-3">
         <div className="field">
-          {/* <label className="label is-small">Date</label> */}
           <div className="control has-icons-left has-icons-right">
             <input
               type="date"

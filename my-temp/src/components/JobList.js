@@ -1,9 +1,26 @@
 import React, { useEffect, useState } from "react";
 import JobCard from "./JobCard";
+import Pagination from "./Pagination";
 
 const JobList = ({ jobs }) => {
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [selectedJobs, setSelectedJobs] = useState([]);
+
+  const jobsPerPage = 20;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalJobs = jobs.length;
+  const totalPages = Math.ceil(totalJobs / jobsPerPage);
+
+  const getJobsForPage = () => {
+    const startIndex = (currentPage - 1) * jobsPerPage;
+    const endIndex = startIndex + jobsPerPage;
+    return jobs.slice(startIndex, endIndex);
+  };
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
+  };
 
   const handleSelect = (jobId) => {
     const isSelected = selectedJobs.includes(jobId);
@@ -14,25 +31,28 @@ const JobList = ({ jobs }) => {
     }
   };
 
+  // Traitement des jobs sélectionnés (par exemple, envoyez-les au panier pour l'étape suivante)
   const handleValidate = () => {
-    // Traitez les jobs sélectionnés (par exemple, envoyez-les au panier)
     console.log("Jobs sélectionnés :", selectedJobs);
     setFilteredJobs(
       filteredJobs.filter((job) => !selectedJobs.includes(job.id))
     );
   };
   useEffect(() => {
-    // Mettre à jour filteredJobs lorsque jobs est modifié
     setFilteredJobs(jobs);
-  }, [jobs]); // Déclencher cet effet chaque fois que jobs change
+  }, [jobs]);
+
   return (
     <div>
-      {filteredJobs?.length}
+      <p>{filteredJobs?.length} offres</p>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        goToPage={goToPage}
+      />
       <div className="columns is-multiline">
-        {/* Utilisez la classe is-multiline pour permettre un retour à la ligne automatique */}
-        {filteredJobs.map((job) => (
+        {getJobsForPage().map((job) => (
           <div className="column is-4" key={job.id}>
-            {/* Utilisez la classe is-4 pour spécifier que chaque colonne occupe 4 unités sur 12 (pour créer une disposition en 3 colonnes sur grand écran) */}
             <JobCard
               job={job}
               isSelected={selectedJobs.includes(job.id)}
